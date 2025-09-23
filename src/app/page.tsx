@@ -70,7 +70,7 @@ export default function Home() {
   };
 
   const eliminarFavorito = (id: number) => {
-    setFavoritos((prev) => prev.filter((f) => f.id !== id));
+    setFavoritos((prev) => prev.filter((favorito) => favorito.id !== id));
   };
 
   const agregarEpisodio = (episodio: Episodio) => {
