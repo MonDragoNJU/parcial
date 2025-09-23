@@ -27,6 +27,17 @@ export default function Home() {
   const [cargando, setCargando] = useState<boolean>(true);
 
   useEffect(() => {
+    const favoritosGuardados = localStorage.getItem("favoritos");
+    if (favoritosGuardados) {
+      setFavoritos(JSON.parse(favoritosGuardados));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("favoritos", JSON.stringify(favoritos));
+  }, [favoritos]);
+
+  useEffect(() => {
     async function obtenerEpisodios() {
       try {
         const resEpisodios = await fetch("https://rickandmortyapi.com/api/episode");
