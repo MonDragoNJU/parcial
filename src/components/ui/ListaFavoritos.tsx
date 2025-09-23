@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Button } from "./button";
 
 type Personaje = {
   id: number;
@@ -19,26 +20,28 @@ type Props = {
 
 export default function ListaFavoritos({ favoritos, onEliminarFavorito }: Props) {
   return (
-    <div className="fixed right-0 top-0 h-full w-80 bg-white border-l shadow-lg overflow-y-auto p-4">
-      <h2 className="text-lg font-bold mb-4 text-center">Favoritos</h2>
+    <div className="p-4 border rounded-lg bg-white shadow-md">
+      <h2 className="text-lg font-bold mb-4 text-center">Personajes Favoritos</h2>
 
       {favoritos.length === 0 ? (
-        <p className="text-center text-gray-500">No hay favoritos aún.</p>
+        <p className="text-center text-gray-500">No hay personajes favoritos aún.</p>
       ) : (
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {favoritos.map((personaje) => (
-            <Card key={personaje.id}>
-              <CardHeader className="flex justify-between items-center">
+            <Card key={personaje.id} className="flex flex-col items-center">
+              <CardHeader className="flex justify-between items-center w-full">
                 <CardTitle className="text-base">{personaje.name}</CardTitle>
-                <button
+                <Button
+                  variant="destructive"
+                  size="icon"
+                  className="h-6 w-12 text-xs"
                   onClick={() => {
                     onEliminarFavorito(personaje.id);
                     toast.error(`${personaje.name} eliminado de favoritos`);
                   }}
-                  className="text-red-500 font-bold text-xs"
                 >
                   Quitar
-                </button>
+                </Button>
               </CardHeader>
               <CardContent className="flex flex-col items-center">
                 <Image

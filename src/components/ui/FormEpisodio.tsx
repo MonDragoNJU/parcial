@@ -26,17 +26,18 @@ type Personaje = {
   image: string;
 };
 
-type Recurso = {
+type Episodio = {
   id: number;
-  titulo: string;
-  personajes: Personaje[];
-  fecha: string;
+  name: string;
+  air_date: string;
+  episode: string;
+  characters: Personaje[];
 };
 
-export default function FormPersonaje({
+export default function FormEpisodio({
   onAgregar,
 }: {
-  onAgregar: (r: Recurso) => void;
+  onAgregar: (r: Episodio) => void;
 }) {
   const {
     register,
@@ -51,7 +52,9 @@ export default function FormPersonaje({
   const onSubmit = async (data: Formulario) => {
     try {
       const ids = data.personajes.split("-").join(",");
-      const res = await fetch(`https://rickandmortyapi.com/api/character/${ids}`);
+      const res = await fetch(
+        `https://rickandmortyapi.com/api/character/${ids}`
+      );
       if (!res.ok) throw new Error("Error al traer personajes");
 
       const personajes = await res.json();
@@ -60,15 +63,22 @@ export default function FormPersonaje({
         ? personajes
         : [personajes];
 
-      const nuevoRecurso: Recurso = {
+      const fechaLegible = new Date().toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
+
+      const nuevoEpisodio: Episodio = {
         id: Date.now(),
-        titulo: data.titulo,
-        personajes: listaPersonajes,
-        fecha: new Date().toISOString(),
+        name: data.titulo,
+        characters: listaPersonajes,
+        episode: "Ficticio",
+        air_date: fechaLegible,
       };
 
-      onAgregar(nuevoRecurso);
-      toast.success("Personajes agregados a la lista principal");
+      onAgregar(nuevoEpisodio);
+      toast.success("Episodio creado con personajes seleccionados");
       reset();
     } catch (error) {
       console.error(error);
@@ -79,11 +89,11 @@ export default function FormPersonaje({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
-        <label className="block font-medium">Titulo</label>
+        <label className="block font-medium">Título del episodio</label>
         <input
           {...register("titulo")}
           className="w-full border rounded px-3 py-2"
-          placeholder="Escribe el título"
+          placeholder="Escribe el título del episodio"
         />
         {errors.titulo && (
           <p className="text-red-500 text-sm">{errors.titulo.message}</p>
@@ -91,11 +101,11 @@ export default function FormPersonaje({
       </div>
 
       <div>
-        <label className="block font-medium">Personajes</label>
+        <label className="block font-medium">IDs de personajes</label>
         <input
           {...register("personajes")}
           className="w-full border rounded px-3 py-2"
-          placeholder="Ej: 1-2-35"
+          placeholder="Ej: 1-2-3"
         />
         {errors.personajes && (
           <p className="text-red-500 text-sm">{errors.personajes.message}</p>
@@ -107,7 +117,7 @@ export default function FormPersonaje({
         disabled={!isValid}
         className="px-4 py-2 rounded text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
       >
-        Crear
+        Crear episodio
       </button>
     </form>
   );
