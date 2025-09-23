@@ -33,7 +33,7 @@ export default function ListaAPI({ personajes, favoritos, onAgregarFavorito }: P
           <Card key={personaje.id}>
             <CardHeader className="flex justify-between items-center">
               <CardTitle>{personaje.name}</CardTitle>
-              <button
+              <button className="bg-yellow-300 rounded px-2 py-1 hover:bg-yellow-400 transition"
                 onClick={() => {
                   if (!esFavorito(personaje.id)) {
                     onAgregarFavorito(personaje);
@@ -42,9 +42,8 @@ export default function ListaAPI({ personajes, favoritos, onAgregarFavorito }: P
                     toast.info(`${personaje.name} ya está en favoritos`);
                   }
                 }}
-                className="text-2xl"
               >
-                {esFavorito(personaje.id) ? "🌟" : "⭐"}
+                {esFavorito(personaje.id) ? "Fav" : "NoFav"}
               </button>
             </CardHeader>
             <CardContent className="flex flex-col items-center">
