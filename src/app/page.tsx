@@ -63,9 +63,9 @@ export default function Home() {
     obtenerEpisodios();
   }, []);
 
-  const agregarFavorito = (p: Personaje) => {
-    if (!favoritos.some((f) => f.id === p.id)) {
-      setFavoritos((prev) => [...prev, p]);
+  const agregarFavorito = (personaje: Personaje) => {
+    if (!favoritos.some((favorito) => favorito.id === personaje.id)) {
+      setFavoritos((prev) => [...prev, personaje]);
     }
   };
 
