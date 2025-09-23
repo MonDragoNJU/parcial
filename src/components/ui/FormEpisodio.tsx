@@ -89,7 +89,7 @@ export default function FormEpisodio({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
-        <label className="block font-medium">Título del episodio</label>
+        <label className="block font-medium">Titulo del episodio</label>
         <input
           {...register("titulo")}
           className="w-full border rounded px-3 py-2"
