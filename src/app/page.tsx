@@ -24,6 +24,7 @@ type Episodio = {
 export default function Home() {
   const [favoritos, setFavoritos] = useState<Personaje[]>([]);
   const [episodios, setEpisodios] = useState<Episodio[]>([]);
+  const [cargando, setCargando] = useState<boolean>(true);
 
   useEffect(() => {
     async function obtenerEpisodios() {
@@ -31,7 +32,8 @@ export default function Home() {
         const resEpisodios = await fetch("https://rickandmortyapi.com/api/episode");
         const data = await resEpisodios.json();
 
-        const primerosDiez = data.results.slice(0, 10);
+        const primerosDiez = data.results.slice(0, 10); //Se demoraba mucho en cargar, seleccionamos los primeros 10
+
         const episodiosConPersonajes: Episodio[] = [];
 
         for (const episodio of primerosDiez) {
@@ -57,6 +59,8 @@ export default function Home() {
         setEpisodios(episodiosConPersonajes);
       } catch (error) {
         console.error("Error al cargar episodios:", error);
+      } finally {
+        setCargando(false);
       }
     }
 
@@ -76,6 +80,16 @@ export default function Home() {
   const agregarEpisodio = (episodio: Episodio) => {
     setEpisodios((prev) => [...prev, episodio]);
   };
+
+  if (cargando) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-lg font-semibold animate-pulse">
+          Cargando episodios...
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 p-6">
@@ -98,6 +112,5 @@ export default function Home() {
         </div>
       </div>
     </div>
-
   );
 }
